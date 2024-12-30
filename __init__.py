@@ -18,6 +18,37 @@ def handler_module(message):
     bot.send_message(message.chat.id, 'List of modules - will do later')
     print('Hello Anton')
 
+@bot.message_handler(commands=['start'])
+def start(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    btn1 = types.KeyboardButton("? Help")
+    btn2 = types.KeyboardButton("❓ Module")
+    markup.add(btn1, btn2)
+    bot.send_message(message.chat.id,
+                     text="Привет, {0.first_name}! ".format(message.from_user), reply_markup=markup)
+@bot.message_handler(content_types=['text'])
+def func(message):
+    if (message.text == "? Help"):
+        bot.send_message(message.chat.id, text="Описание работы)")
+    elif (message.text == "❓ Module"):
+        markup = types.InlineKeyboardMarkup(row_width=1)
+        item = types.InlineKeyboardMarkup ('3-TMS-001')
+        item2 = types.InlineKeyboardMarkup ('3-TMR-001')
+        back = types.InlineKeyboardMarkup("Вернуться в главное меню")
+        markup.add(item, item2, back)
+        bot.send_message(message.chat.id, text="", reply_markup=markup)
+
+    elif (message.text == "Вернуться в главное меню"):
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        button1 = types.KeyboardButton("? Help")
+        button2 = types.KeyboardButton("❓ Module")
+        markup.add(button1, button2)
+        bot.send_message(message.chat.id, text="Вы вернулись в главное меню", reply_markup=markup)
+    else:
+        bot.send_message(message.chat.id, text="Unknown input")
+
+bot.polling(none_stop=True)
+
 # @bot.message_handler(content_types='text')
 # def handler_request(message):
 #     bot.send_message(message.chat.id, 'asdad')
